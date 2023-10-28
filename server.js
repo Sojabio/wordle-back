@@ -21,9 +21,9 @@ db.sequelize.sync({force: true}).then(() => {
 });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Bienvenue sur le backend du wordle de soja" });
-});
+// app.get("/", (req, res) => {
+//   res.json({ message: "Bienvenue sur le backend du wordle de soja" });
+// });
 
 //routes
 require('./app/routes/auth.routes')(app);

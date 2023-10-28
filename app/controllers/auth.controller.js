@@ -7,8 +7,8 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+// SIGNUP
 exports.signup = (req, res) => {
-  // Save User to Database
   User.create({
     username: req.body.username,
     email: req.body.email,
@@ -22,6 +22,7 @@ exports.signup = (req, res) => {
     });
 };
 
+// SIGN IN
 exports.signin = (req, res) => {
   User.findOne({
     where: {
@@ -64,3 +65,5 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+
