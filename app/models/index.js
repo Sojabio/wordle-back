@@ -1,13 +1,4 @@
 const config = require("../config/db.config.js");
-const { Pool } = require('pg')
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-})
-
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(

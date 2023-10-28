@@ -15,6 +15,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // database
 const db = require("./app/models");
+const { Pool } = require('pg')
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+})
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Database with { force: true }');
