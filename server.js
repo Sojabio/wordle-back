@@ -15,14 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // database
 const db = require("./app/models");
-const { Pool } = require('pg')
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-})
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Database with { force: true }');
@@ -32,20 +24,6 @@ db.sequelize.sync({force: true}).then(() => {
 app.get("/", (req, res) => {
   res.json({ message: "Bienvenue sur le backend du wordle de soja" });
 });
-
-app.get('/db', async (req, res) => {
-  try {
-    const client = await pool.connect();
-    const result = await client.query('SELECT * FROM test_table');
-    const results = { 'results': (result) ? result.rows : null};
-    res.render('pages/db', results );
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-})
-
 
 //routes
 require('./app/routes/auth.routes')(app);

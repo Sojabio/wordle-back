@@ -8,6 +8,19 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 // SIGNUP
+// exports.signup = (req, res) => {
+//   User.create({
+//     username: req.body.username,
+//     email: req.body.email,
+//     password: bcrypt.hashSync(req.body.password, 8)
+//   })
+//     .then(user => {
+//       res.send({ message: "User registered successfully!" });
+//     })
+//     .catch(err => {
+//       res.status(500).send({ message: err.message });
+//     });
+// };
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
@@ -15,13 +28,23 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
-      res.send({ message: "User registered successfully!" });
+      const token = jwt.sign({ id: user.id }, config.secret, {
+        algorithm: 'HS256',
+        allowInsecureKeySizes: true,
+        expiresIn: 86400 // 24 hours
+      });
+
+      res.status(201).send({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        accessToken: token
+      });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
 };
-
 // SIGN IN
 exports.signin = (req, res) => {
   User.findOne({
@@ -65,5 +88,3 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
-
-
